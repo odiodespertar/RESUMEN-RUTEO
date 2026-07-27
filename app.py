@@ -1,4 +1,4 @@
-code = '''import streamlit as st
+import streamlit as st
 
 # Configuración de página
 st.set_page_config(page_title="Resumen de Ruteo SJA1", layout="wide")
@@ -22,22 +22,20 @@ st.markdown("""
         padding-top: 10px;
         color: #111111;
     }
-    /* Personalización de colores de los selectbox si se requiere */
     div[data-baseweb="select"] {
         border-radius: 8px;
     }
 </style>
-""", unsafe_allow_html=unsafe_allow_html)
+""", unsafe_allow_html=True)
 
 st.markdown('<div class="header-box">RESUMEN DE RUTEO SJA1</div>', unsafe_allow_html=True)
 
-# Pestañas para diferentes sedes o vistas (ejemplo: SJA1, SJA2, General)
+# Pestañas para diferentes sedes
 tab1, tab2, tab3 = st.tabs(["📌 SJA1 - Principal", "📌 SJA2 - Secundaria", "📊 Resumen General"])
 
 with tab1:
     st.write("### Selección de Parámetros y Estados - SJA1")
     
-    # Usamos st.container y st.columns para simular la estructura de la tabla
     with st.container():
         # Fila 1: Volumen
         col1, col2 = st.columns([1, 2])
@@ -117,7 +115,7 @@ with tab1:
 
         st.divider()
 
-        # Fila 6: DROPEO EN C1 (múltiples selecciones en paralelo)
+        # Fila 6: DROPEO EN C1
         col1, col2, col3 = st.columns([1, 1.5, 1.5])
         with col1:
             st.markdown('<div class="row-label">DROPEO EN C1</div>', unsafe_allow_html=True)
@@ -212,9 +210,3 @@ with tab3:
         "Alchichica ND": alchichica,
         "Parámetros": parametros
     })
-'''
-
-with open("app_ruteo.py", "w", encoding="utf-8") as f:
-    f.write(code)
-
-print("File generated successfully: app_ruteo.py")
