@@ -3,48 +3,62 @@ import streamlit as st
 # Configuración de página
 st.set_page_config(page_title="Resumen de Ruteo SJA1", layout="wide")
 
-# CSS Ultracompacto estilo Google Sheets con colores exactos
+# CSS REFORZADO: Anula el Modo Oscuro global de Streamlit y fuerza tema claro
 st.markdown("""
 <style>
-    /* 1. Eliminar márgenes exteriores de Streamlit */
+    /* 1. Forzar fondo claro en TODA la aplicación y contenedores */
+    html, body, [data-testid="stAppViewContainer"], .stApp {
+        background-color: #F8F9FA !important;
+        color: #000000 !important;
+    }
+
+    /* Anular márgenes de Streamlit para pantalla completa */
     .block-container {
         padding: 0.5rem 1rem !important;
         max-width: 100% !important;
-    }
-    
-    .stApp {
-        background-color: #F8F9FA !important;
-        color: #000000 !important;
     }
 
     [data-testid="stVerticalBlock"] {
         gap: 1px !important;
     }
 
-    /* 2. Encabezado negro superior */
+    /* 2. Forzar estilo Claro en las PESTAÑAS (st.tabs) */
+    div[data-baseweb="tab-list"] {
+        background-color: #F8F9FA !important;
+        border-bottom: 2px solid #E0E0E0 !important;
+    }
+
+    button[data-baseweb="tab"] {
+        background-color: #F8F9FA !important;
+        color: #555555 !important;
+        padding: 4px 12px !important;
+        font-size: 13px !important;
+        font-weight: bold !important;
+    }
+
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: #000000 !important;
+        border-bottom-color: #000000 !important;
+    }
+
+    /* 3. Encabezado negro idéntico al de Sheets */
     .header-box {
         background-color: #000000;
-        color: #ffffff;
+        color: #FFFFFF !important;
         text-align: center;
         font-weight: bold;
         font-size: 15px;
-        padding: 5px;
+        padding: 6px;
         border-radius: 2px;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
         letter-spacing: 0.5px;
-    }
-
-    /* 3. Pestañas pequeñas */
-    button[data-baseweb="tab"] {
-        padding: 3px 10px !important;
-        font-size: 12px !important;
     }
 
     /* 4. Etiqueta izquierda */
     .label-cell {
         font-weight: bold;
         font-size: 12px;
-        color: #000000;
+        color: #000000 !important;
         padding-top: 5px;
         font-family: Arial, sans-serif;
     }
@@ -69,9 +83,10 @@ st.markdown("""
     div[data-baseweb="select"] svg {
         width: 12px !important;
         height: 12px !important;
+        fill: currentColor !important;
     }
 
-    /* 6. Colores Exactos de las celdas de la captura */
+    /* 6. Colores Exactos de las celdas de tu captura */
     .c-purple div[data-baseweb="select"] > div { background-color: #D6D5F2 !important; color: #362985 !important; }
     .c-blue div[data-baseweb="select"] > div   { background-color: #D3E8E9 !important; color: #1E5C6B !important; }
     .c-yellow div[data-baseweb="select"] > div { background-color: #FFF3C4 !important; color: #78630B !important; }
@@ -80,6 +95,14 @@ st.markdown("""
     .c-orange div[data-baseweb="select"] > div { background-color: #FEDBC3 !important; color: #A04400 !important; }
     .c-green div[data-baseweb="select"] > div  { background-color: #D7F0DB !important; color: #175B22 !important; }
     .c-pink div[data-baseweb="select"] > div   { background-color: #FEE0EB !important; color: #6D1B40 !important; }
+
+    /* Forzar fondo blanco en los menús que se abren */
+    div[role="listbox"] {
+        background-color: #FFFFFF !important;
+    }
+    div[role="listbox"] li {
+        color: #000000 !important;
+    }
 
     /* Divisiones punteadas */
     .dashed-divider {
@@ -144,28 +167,24 @@ with tab1:
     # División punteada arriba de DROPEO
     st.markdown('<div class="dashed-divider"></div>', unsafe_allow_html=True)
 
-    # 6. DROPEO EN C1 (Columna principal + Subcolumnas a la derecha)
+    # 6. DROPEO EN C1
     col1, col2, col3 = st.columns([1.2, 2, 1])
     with col1:
         st.markdown('<div class="label-cell" style="padding-top:25px;">DROPEO EN C1</div>', unsafe_allow_html=True)
     with col2:
-        # Fila 1 de Dropeo (Rojo)
         st.markdown('<div class="c-red">', unsafe_allow_html=True)
         d_c1_1 = st.selectbox("Dropeo 1", ["Por zona de restricción", "No hubo"], key="dc1_1", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # Fila 2 de Dropeo (Naranja)
         st.markdown('<div class="c-orange" style="margin-top:2px;">', unsafe_allow_html=True)
         d_c1_2 = st.selectbox("Dropeo 2", ["Por ruta improductiva", "No hubo"], key="dc1_2", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-        # Fila 3 de Dropeo (Amarillo / Naranja Claro)
         st.markdown('<div class="c-yellow" style="margin-top:2px;">', unsafe_allow_html=True)
         d_c1_3 = st.selectbox("Dropeo 3", ["Dropeo de nodo", "No hubo"], key="dc1_3", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
     with col3:
-        # Sub-desplegables grises auxiliares a la derecha
         st.markdown('<div class="c-gray">', unsafe_allow_html=True)
         sub_1 = st.selectbox("Sub 1", ["-- Seleccionar --"], key="s1", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
