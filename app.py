@@ -3,194 +3,204 @@ import streamlit as st
 # Configuración de página
 st.set_page_config(page_title="Resumen de Ruteo SJA1", layout="wide")
 
-# CSS personalizado para forzar tema claro y clonar la apariencia de la imagen
+# CSS Ultracompacto estilo Excel
 st.markdown("""
 <style>
-    /* Forzar fondo gris claro tipo Excel en toda la app */
+    /* 1. Eliminar márgenes exteriores gigantes de Streamlit */
+    .block-container {
+        padding: 0.5rem 1rem !important;
+        max-width: 100% !important;
+    }
+    
     .stApp {
-        background-color: #ECECEC !important;
+        background-color: #F4F5F7 !important;
         color: #000000 !important;
     }
 
-    /* Encabezado Negro Superior */
+    [data-testid="stVerticalBlock"] {
+        gap: 2px !important;
+    }
+
+    /* 2. Encabezado compacto */
     .header-box {
         background-color: #000000;
-        color: #FFFFFF !important;
+        color: #ffffff;
         text-align: center;
-        font-weight: 900;
-        font-size: 22px;
-        padding: 10px;
-        letter-spacing: 1px;
-        border-radius: 2px;
-        margin-bottom: 0px;
-    }
-
-    /* Etiquetas de la columna izquierda */
-    .row-label {
-        font-weight: 800;
+        font-weight: bold;
         font-size: 16px;
-        color: #000000 !important;
-        padding-left: 10px;
-        display: flex;
-        align-items: center;
-        height: 100%;
+        padding: 6px;
+        border-radius: 3px;
+        margin-bottom: 6px;
     }
 
-    /* Estilos base para todos los selectbox */
+    /* 3. Reducir pestañas */
+    button[data-baseweb="tab"] {
+        padding: 4px 12px !important;
+        font-size: 13px !important;
+    }
+
+    /* 4. Celda de texto a la izquierda ultra compacta */
+    .label-cell {
+        font-weight: 700;
+        font-size: 12.5px;
+        color: #111111;
+        padding-top: 4px;
+        line-height: 1.1;
+    }
+
+    /* 5. ACHICAR DESPLEGABLES (COMPACTO) */
+    div[data-testid="stSelectbox"] {
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+
     div[data-baseweb="select"] > div {
-        border-radius: 12px !important;
+        border-radius: 6px !important;
         border: none !important;
-        font-weight: 500 !important;
+        min-height: 28px !important;
+        height: 28px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
     }
 
-    /* Colores pastel específicos para replicar la imagen */
-    .bg-purple div[data-baseweb="select"] > div { background-color: #DCD6F7 !important; color: #362285 !important; }
-    .bg-blue div[data-baseweb="select"] > div   { background-color: #D2E7ED !important; color: #1D5C6E !important; }
-    .bg-yellow div[data-baseweb="select"] > div { background-color: #FFF3C4 !important; color: #7B6200 !important; }
-    .bg-red div[data-baseweb="select"] > div    { background-color: #FFD2D2 !important; color: #B71C1C !important; }
-    .bg-orange div[data-baseweb="select"] > div { background-color: #FFE0C2 !important; color: #A04000 !important; }
-    .bg-green div[data-baseweb="select"] > div  { background-color: #D4EDDA !important; color: #155724 !important; }
-    .bg-pink div[data-baseweb="select"] > div   { background-color: #F8D7DA !important; color: #721C24 !important; }
-    .bg-gray div[data-baseweb="select"] > div   { background-color: #EAEAEA !important; color: #555555 !important; }
-
-    /* Forzar texto de opciones desplegables a negro */
-    div[role="listbox"] li {
-        color: #000000 !important;
-        background-color: #FFFFFF !important;
+    /* Reducir tamaño del icono de la flechita */
+    div[data-baseweb="select"] svg {
+        width: 14px !important;
+        height: 14px !important;
     }
 
-    /* Fondo blanco para las celdas de la tabla */
-    .grid-row {
-        background-color: #F8F9FA;
-        border-bottom: 1px solid #D0D0D0;
-        padding: 6px 0px;
+    /* 6. Colores Pastel idénticos a la imagen original */
+    .purple-select div[data-baseweb="select"] > div { background-color: #E2D9F3 !important; color: #3B2073 !important; }
+    .blue-select div[data-baseweb="select"] > div   { background-color: #D1E7EC !important; color: #1A5160 !important; }
+    .yellow-select div[data-baseweb="select"] > div { background-color: #FEF0BE !important; color: #735900 !important; }
+    .gray-select div[data-baseweb="select"] > div   { background-color: #E9ECEF !important; color: #212529 !important; }
+    .red-select div[data-baseweb="select"] > div    { background-color: #FFDEDE !important; color: #A91D1D !important; }
+    .orange-select div[data-baseweb="select"] > div { background-color: #FDE2CD !important; color: #8E3E00 !important; }
+    .green-select div[data-baseweb="select"] > div  { background-color: #D2F1DA !important; color: #125125 !important; }
+    .pink-select div[data-baseweb="select"] > div   { background-color: #FBE0EB !important; color: #7D1F48 !important; }
+
+    /* Líneas divisiones delgadas */
+    .dashed-line {
+        border-top: 1px dashed #B0B0B0;
+        margin: 3px 0px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# Encabezado Principal
+# Encabezado
 st.markdown('<div class="header-box">RESUMEN DE RUTEO SJA1</div>', unsafe_allow_html=True)
 
 # Pestañas
-tab1, tab2, tab3 = st.tabs(["📌 SJA1 - Principal", "📌 SJA2 - Secundaria", "📊 Resumen General"])
+tab1, tab2 = st.tabs(["📌 SJA1 - Principal", "📊 Datos"])
 
 with tab1:
-    
-    # Fila 1: Volumen (Morado)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 1. Volumen
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">Volumen</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">Volumen</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-purple">', unsafe_allow_html=True)
-        volumen = st.selectbox("Volumen", ["C1: Se ruteó el volumen asignado para C1", "C2: Se ruteó el volumen asignado para C2"], key="volumen", label_visibility="collapsed")
+        st.markdown('<div class="purple-select">', unsafe_allow_html=True)
+        volumen = st.selectbox("Volumen", ["C1: Se ruteó el volumen asignado para C1", "C2: Se ruteó C2"], key="vol", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
-
-    # Fila 2: Rentals (Azul claro)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 2. Rentals
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">Rentals</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">Rentals</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-blue">', unsafe_allow_html=True)
-        rentals = st.selectbox("Rentals", ["Se asignan como híbridas, pero logis cambia algunas a no híbridas", "Se asignan 100% híbridas"], key="rentals", label_visibility="collapsed")
+        st.markdown('<div class="blue-select">', unsafe_allow_html=True)
+        rentals = st.selectbox("Rentals", ["Se asignan como híbridas, pero logis cambia algunas a no híbridas", "Híbridas 100%"], key="rent", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
-
-    # Fila 3: Truck 3.5 tons MLP (Amarillo)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 3. Truck 3.5 tons MLP
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">Truck 3.5 tons MLP</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">Truck 3.5 tons MLP</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-yellow">', unsafe_allow_html=True)
-        truck_mlp = st.selectbox("Truck MLP", ["Logis no la toma", "Asignada"], key="truck_mlp", label_visibility="collapsed")
+        st.markdown('<div class="yellow-select">', unsafe_allow_html=True)
+        truck_mlp = st.selectbox("Truck MLP", ["Logis no la toma", "Asignada"], key="truck", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
-
-    # Fila 4: Delivery Cell Large Van (Amarillo)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 4. Delivery Cell Large Van
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">Delivery Cell Large Van</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">Delivery Cell Large Van</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-yellow">', unsafe_allow_html=True)
-        large_van = st.selectbox("Large Van", ["Logis no la toma", "Asignada"], key="large_van", label_visibility="collapsed")
+        st.markdown('<div class="yellow-select">', unsafe_allow_html=True)
+        large_van = st.selectbox("Large Van", ["Logis no la toma", "Asignada"], key="van", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
-
-    # Fila 5: Extra Large Van MLP H&B (Gris/Normal)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 5. Extra Large Van MLP H&B
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">Extra Large Van MLP H&B</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">Extra Large Van MLP H&B</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-gray">', unsafe_allow_html=True)
-        xl_van = st.selectbox("XL Van", ["No aplica", "Aplica"], key="xl_van", label_visibility="collapsed")
+        st.markdown('<div class="gray-select">', unsafe_allow_html=True)
+        xl_van = st.selectbox("XL Van", ["No aplica", "Aplica"], key="xl", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
+    # Línea punteada
+    st.markdown('<div class="dashed-line"></div>', unsafe_allow_html=True)
 
-    # Fila 6: DROPEO EN C1 (Múltiples opciones con colores)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 6. DROPEO EN C1
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">DROPEO EN C1</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell" style="padding-top:18px;">DROPEO EN C1</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-red">', unsafe_allow_html=True)
-        d_c1_1 = st.selectbox("Dropeo C1 1", ["Por zona de restricción", "Sin restricción"], key="d_c1_1", label_visibility="collapsed")
+        st.markdown('<div class="red-select">', unsafe_allow_html=True)
+        d_c1_1 = st.selectbox("Dropeo 1", ["Por zona de restricción", "Sin restricción"], key="dc1_1", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="bg-orange" style="margin-top: 8px;">', unsafe_allow_html=True)
-        d_c1_2 = st.selectbox("Dropeo C1 2", ["Por ruta improductiva", "Ruta normal"], key="d_c1_2", label_visibility="collapsed")
+
+        st.markdown('<div class="orange-select">', unsafe_allow_html=True)
+        d_c1_2 = st.selectbox("Dropeo 2", ["Por ruta improductiva", "Ruta normal"], key="dc1_2", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="bg-gray" style="margin-top: 8px;">', unsafe_allow_html=True)
-        d_c1_3 = st.selectbox("Dropeo C1 3", ["-- Seleccionar --", "Opción A"], key="d_c1_3", label_visibility="collapsed")
+
+        st.markdown('<div class="gray-select">', unsafe_allow_html=True)
+        d_c1_3 = st.selectbox("Dropeo 3", ["-- Seleccionar --"], key="dc1_3", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
     with col3:
-        st.markdown('<div class="bg-gray">', unsafe_allow_html=True)
-        sub_1 = st.selectbox("Sub 1", ["-- Seleccionar --"], key="sub_1", label_visibility="collapsed")
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        st.markdown('<div class="bg-gray" style="margin-top: 8px;">', unsafe_allow_html=True)
-        sub_2 = st.selectbox("Sub 2", ["-- Seleccionar --"], key="sub_2", label_visibility="collapsed")
+        st.markdown('<div class="gray-select">', unsafe_allow_html=True)
+        sub_1 = st.selectbox("Sub 1", ["-- Seleccionar --"], key="s1", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
+        st.markdown('<div class="gray-select">', unsafe_allow_html=True)
+        sub_2 = st.selectbox("Sub 2", ["-- Seleccionar --"], key="s2", label_visibility="collapsed")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-    # Fila 7: DROPEO CONTINGENCIA (Rojo)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+        st.markdown('<div class="gray-select">', unsafe_allow_html=True)
+        sub_3 = st.selectbox("Sub 3", ["-- Seleccionar --"], key="s3", label_visibility="collapsed")
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown('<div class="dashed-line"></div>', unsafe_allow_html=True)
+
+    # 7. DROPEO CONTINGENCIA
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">DROPEO CONTINGENCIA</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">DROPEO CONTINGENCIA</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-red">', unsafe_allow_html=True)
+        st.markdown('<div class="red-select">', unsafe_allow_html=True)
         d_cont = st.selectbox("Contingencia", ["Por zona de restricción", "Sin contingencia"], key="d_cont", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
-
-    # Fila 8: Alchichica ND (Verde)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 8. Alchichica ND
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">Alchichica ND</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">Alchichica ND</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-green">', unsafe_allow_html=True)
-        alchichica = st.selectbox("Alchichica", ["Se carga en AM0 con 2 unidades Small Van MLP", "No se rutea"], key="alchichica", label_visibility="collapsed")
+        st.markdown('<div class="green-select">', unsafe_allow_html=True)
+        alchichica = st.selectbox("Alchichica", ["Se carga en AM0 con 2 unidades Small Van MLP", "No se rutea"], key="alch", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
-    st.divider()
-
-    # Fila 9: Parámetros (Rosa)
-    col1, col2, col3 = st.columns([1.2, 1.8, 1])
+    # 9. Parámetros
+    col1, col2, col3 = st.columns([1.1, 1.9, 1])
     with col1:
-        st.markdown('<div class="row-label">Parámetros</div>', unsafe_allow_html=True)
+        st.markdown('<div class="label-cell">Parámetros</div>', unsafe_allow_html=True)
     with col2:
-        st.markdown('<div class="bg-pink">', unsafe_allow_html=True)
-        parametros = st.selectbox("Parámetros", ["Aplicados para el día lunes", "Aplicados para el día martes"], key="parametros", label_visibility="collapsed")
+        st.markdown('<div class="pink-select">', unsafe_allow_html=True)
+        parametros = st.selectbox("Parámetros", ["Aplicados para el día lunes", "Aplicados martes"], key="params", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
 with tab2:
-    st.info("Pestaña secundaria para SJA2.")
-
-with tab3:
     st.json({"Volumen": volumen, "Rentals": rentals, "Parámetros": parametros})
