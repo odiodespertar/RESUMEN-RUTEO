@@ -102,7 +102,7 @@ with tab1:
         st.markdown('<div class="label-cell">Volumen</div>', unsafe_allow_html=True)
     with col2:
         st.markdown('<div class="purple-select">', unsafe_allow_html=True)
-        volumen = st.selectbox("Volumen", ["Uniciclo: se ruteó el volumen disponible en logis", "C2: Se ruteó C2"], key="vol", label_visibility="collapsed")
+        volumen = st.selectbox("Volumen", ["Uniciclo: se ruteó el volumen disponible en logis", "C1: Se ruteó el volumen asignado para C1"], key="vol", label_visibility="collapsed")
         st.markdown('</div>', unsafe_allow_html=True)
 
     # 2. Rentals
