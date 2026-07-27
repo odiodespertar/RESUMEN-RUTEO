@@ -71,15 +71,15 @@ st.markdown("""
         height: 14px !important;
     }
 
-    /* 6. Colores Pastel idénticos a la imagen original */
-    .purple-select div[data-baseweb="select"] > div { background-color: #E2D9F3 !important; color: #3B2073 !important; }
-    .blue-select div[data-baseweb="select"] > div   { background-color: #D1E7EC !important; color: #1A5160 !important; }
-    .yellow-select div[data-baseweb="select"] > div { background-color: #FEF0BE !important; color: #735900 !important; }
-    .gray-select div[data-baseweb="select"] > div   { background-color: #E9ECEF !important; color: #212529 !important; }
-    .red-select div[data-baseweb="select"] > div    { background-color: #FFDEDE !important; color: #A91D1D !important; }
-    .orange-select div[data-baseweb="select"] > div { background-color: #FDE2CD !important; color: #8E3E00 !important; }
-    .green-select div[data-baseweb="select"] > div  { background-color: #D2F1DA !important; color: #125125 !important; }
-    .pink-select div[data-baseweb="select"] > div   { background-color: #FBE0EB !important; color: #7D1F48 !important; }
+   /* Colores exactos extraídos de la captura */
+.purple-select div[data-baseweb="select"] > div { background-color: #D6D5F2 !important; color: #362985 !important; } /* Volumen */
+.blue-select div[data-baseweb="select"] > div   { background-color: #D3E8E9 !important; color: #1E5C6B !important; } /* Rentals */
+.yellow-select div[data-baseweb="select"] > div { background-color: #FFF3C4 !important; color: #78630B !important; } /* Trucks / Vans */
+.gray-select div[data-baseweb="select"] > div   { background-color: #ECEEEF !important; color: #2B303A !important; } /* Extra Large Van / Opciones vacías */
+.red-select div[data-baseweb="select"] > div    { background-color: #FFD2D2 !important; color: #A81818 !important; } /* Restricción */
+.orange-select div[data-baseweb="select"] > div { background-color: #FEDBC3 !important; color: #A04400 !important; } /* Ruta improductiva */
+.green-select div[data-baseweb="select"] > div  { background-color: #D7F0DB !important; color: #175B22 !important; } /* Alchichica ND */
+.pink-select div[data-baseweb="select"] > div   { background-color: #FEE0EB !important; color: #6D1B40 !important; } /* Parámetros */
 
     /* Líneas divisiones delgadas */
     .dashed-line {
